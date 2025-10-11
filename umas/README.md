@@ -2,20 +2,19 @@
 
 ## Basics
 
-Umas are formatted in Pure Json. They take very specific arguments that are **COURSE DEPENDANT**.
+Umas are formatted in Pure json. They take very specific arguments that are **course dependent**.
 
-e.g. An uma in game might have S in long but C in mile. The Umalator does not differenciate!
-It will read `"distanceAptitude": "S",` and consider you **S** Aptitude for ANY RACE THE UMA IS PLACED IN.
+e.g. An Uma in game might have S in long but C in mile. The Umalator does not differentiate!
+It will read `"distanceAptitude": "S",` and consider you **S** Aptitude no matter the track selected.
 
 Consider this when formatting your Umas.
-(Maybe implement a secondary system to import umas by track distance.)
 
 ---
 
 ## `speed`, `stamina`, `power`, `guts`, `wit`:
 
 These are arguments each ranging between `0` and `1200` as of time of writing for Global. (Stat caps will be raised in future updates)
-These are Uma specific, so there should not need to be any changes between umas.
+These are Uma specific, so there should not need to be any changes between Umas.
 
 ```json
 "speed": 1200,
@@ -29,7 +28,7 @@ These are Uma specific, so there should not need to be any changes between umas.
 
 ## Strategy:
 
-Strategies come directly from the Japanese naming schemes where the og umalator comes from.
+Strategies come directly from the Japanese naming schemes.
 The different strategies are:
 
 - `Nige`
@@ -47,7 +46,7 @@ Place the specified strategy string in the file like so:
 "strategy" : "Sasi",
 ```
 
-NOTE: `strategyAptitude` is dependant on this selection. Make sure your aptitude matches the strategy chosen!
+NOTE: `strategyAptitude` is dependent on this selection. Make sure your aptitude matches the strategy chosen!
 
 ---
 
@@ -56,6 +55,7 @@ NOTE: `strategyAptitude` is dependant on this selection. Make sure your aptitude
 The current surface, distance, and strategy aptitudes. These depend on previous sections so make sure you match the correct course/strategy with it's aptitude.
 Letter grades vary from `S` all the way to `G`
 Available grades: `{S, A, B, C, D, E, F, G}`
+i.e.:
 
 ```json
 "distanceAptitude": "S",
@@ -67,7 +67,7 @@ Available grades: `{S, A, B, C, D, E, F, G}`
 
 ## Skills:
 
-Skills are a Json list of the skill ids for your Uma.
+Skills are a json list of the skill ids for your Uma.
 i.e. Your Uma has "Professor of Curvature" so you add `[..., 200331, ...]` to your `"skills"` key.
 Find specific skill ids by Online Umalator: https://alpha123.github.io/uma-tools/umalator-global/
 Or by running
@@ -76,7 +76,7 @@ Or by running
 npx ts-node tools/skillgrep.ts --help
 ```
 
-That is an english/japanese search for skills.
+for local code that finds the skill from english/japanese names.
 
 Format the skills like:
 
