@@ -29,7 +29,7 @@ The repository is organized as follows:
   *This is a submodule.* It provides OCR (Optical Character Recognition) functionality for importing Umamusume trainee-images into a csv.
   
 - `umas/`  
-  Contains resources and documentation for Umamusume characters.  
+  Stores `uma.json` files for use in the tournament.  
   - [`README.md`](https://github.com/Turtleca/Uma-Tournament/blob/main/umas/README.md): Details about the contents and usage of this directory.
   - [`template.json`](https://github.com/Turtleca/Uma-Tournament/blob/main/umas/template.json): A template JSON file for character data.
 
@@ -60,7 +60,7 @@ See the [LICENSE](./LICENSE) file for details.
      ```
 
 3. **Explore the Code**
-   - Review the [`umas/README.md`](https://github.com/Turtleca/Uma-Tournament/blob/main/umas/README.md) for details on the Umamusume resources.
+   - Review the [`umas/README.md`](https://github.com/Turtleca/Uma-Tournament/blob/main/umas/README.md) for details on the Umamusume json.
    - Check submodule documentation for usage instructions of their respective tools.
 
 ---
