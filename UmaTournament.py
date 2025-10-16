@@ -6,28 +6,24 @@ This Program takes in the .csv (from or adjusted) [umamusume-ocr] and pits autom
 in a round robin style bracket for CM &/or Teams Trials.
 """
 
-import base64
 import csv
 import gzip
 import json
-import logging
-import os
-import re
-import subprocess
-import sys
-import threading
-import tkinter as tk
-import urllib.parse
-from typing import Callable, Dict, List
-
-from rapidfuzz import fuzz, process
+from typing import Dict, List
 
 import Racecourse as rc
 import Uma as um
 
-
-def create_match(uma_1: um.Uma, uma_2: um.Uma, track: rc.RaceCourse) -> Dict[str, int]:
-    pass
+###
+# 1. Load the custom ~ish csv into a list of Uma classes
+# 2. Run either
+#     - Teams Trials
+#         - Get matches on several races of the same dist
+#         - Randomize conditions and(?) mood(?)
+#     - Champions meeting
+#         - Run all matches on one singular condition
+# 3. Export data ranked by largest winrate/teams-trials score
+#
 
 
 def read_csv(filepath: str) -> List[Uma]:
@@ -39,6 +35,10 @@ def trournament_teamstrials(distance: str) -> List[Uma]:
 
 
 def tournament_CM(conditions) -> List[Uma]:
+    pass
+
+
+def create_match(uma_1: um.Uma, uma_2: um.Uma, track: rc.RaceCourse) -> Dict[str, int]:
     pass
 
 
