@@ -11,8 +11,8 @@ import gzip
 import json
 from typing import Dict, List
 
-import Racecourse as rc
-import Uma as um
+import racecourse as rc
+import uma
 
 ###
 # 1. Load the custom ~ish csv into a list of Uma classes
@@ -26,24 +26,36 @@ import Uma as um
 #
 
 
-def read_csv(filepath: str) -> List[Uma]:
+def read_csv(filepath: str) -> List[uma.Uma]:
     pass
 
 
-def trournament_teamstrials(distance: str) -> List[Uma]:
+def trournament_teamstrials(distance: str) -> List[uma.Uma]:
     pass
 
 
-def tournament_CM(conditions) -> List[Uma]:
+def tournament_CM(conditions) -> List[uma.Uma]:
     pass
 
 
-def create_match(uma_1: um.Uma, uma_2: um.Uma, track: rc.RaceCourse) -> Dict[str, int]:
+def create_match(
+    uma_1: uma.Uma, uma_2: uma.Uma, track: rc.RaceCourse
+) -> Dict[str, int]:
     pass
 
 
 def main(**args):
-    pass
+
+    mqueen = uma.Uma(
+        "Mejiro Mqueen",
+        "[idk]",
+        200,
+        [100, 100, 100, 100, 100],
+        "Nige",
+        [],
+        ["A", "A", "A"],
+    )
+    print(mqueen)
 
 
 if __name__ == "__main__":
