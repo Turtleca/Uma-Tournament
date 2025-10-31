@@ -5,6 +5,8 @@ Uma Class file
 from enum import Enum
 from typing import Dict, List
 
+from aptitudes import Aptitudes
+
 
 class LetterGrade(Enum):
     """
@@ -38,7 +40,7 @@ class Uma:
     # Identifiers
     name: str  # Name in Plain Text
     outfit_id: str  # Outfit tagline
-    score: int
+    score: int  # Score number
 
     # Stats
     stats: Dict[str, int] = {
@@ -49,20 +51,17 @@ class Uma:
         "wisdom": 1,
     }
 
-    # Prefered Strategy
-    strategy: str
-
     # Aptitudes
     aptitudes: Dict[str, Dict[str, LetterGrade]] = {
+        "surface_aptitudes": {  # Ordered by uma-skill-tools
+            "Turf": LetterGrade("G"),
+            "Dirt": LetterGrade("G"),
+        },
         "distance_aptitudes": {
             "Sprint": LetterGrade("G"),
             "Mile": LetterGrade("G"),
             "Medium": LetterGrade("G"),
             "Long": LetterGrade("G"),
-        },
-        "surface_aptitudes": {
-            "Turf": LetterGrade("G"),
-            "Dirt": LetterGrade("G"),
         },
         "strategy_aptitudes": {
             "Front": LetterGrade("G"),
@@ -75,65 +74,51 @@ class Uma:
     # Skills list (Skill Names)
     skills: List[str]
 
-    def __init__(
-        self,
-        name: str,
-        outfit: str,
-        score: int,
-        stats: List,
-        op_strategy: str,
-        aptitudes: List[List[str]],
-        skills: List[str],
-    ) -> None:
-        """
-        Parameters
-        ----------
-        name : str
-        outfit : str
-        score : int
-        stats : List
-        op_strategy : str
-        skills : List
-        aptitudes : List
-        """
+    ### Methods
 
-        # Identifiers
+    ### Setters for each parameter (allow chaining)
+    # Name & Outit -> Requires changing Unique skill (first?)
+    def set_name_n_outfit(self, name: str, outfit: str):
         self.name = name
         self.outfit_id = outfit
+
+        # TODO: Find Unique skill from uma-skill-tools
+
+        return self
+
+    # Score -> Could be Automatically set with calculation?
+
+    def set_score(self, score: int):
         self.score = score
 
-        # Stats
-        (
-            self.stats["speed"],
-            self.stats["stamina"],
-            self.stats["power"],
-            self.stats["guts"],
-            self.stats["wisdom"],
-        ) = stats
+        return self
 
-        # Strategy
-        self.strategy = op_strategy
+    # Stats -> Either full dictionary or individual values?
+    def set_stat(self, stats_dict: Dict[str, int] = {}, **stat):
+        if stats_dict != {}:  # Case of full dictionary input (input validate)
+            pass
 
-        # Aptitudes
-        self.distance_aptitudes = LetterGrade(aptitudes[0])
-        self.surface_aptitudes = LetterGrade(aptitudes[1])
-        self.strategy_aptitudes = LetterGrade(aptitudes[2])
+        if len(stat) != 0:  # Case of single key value pair (input validate)
+            pass
 
-        # Skills
-        self.skills = skills
+        else:  # Case of neither? Log redundant call.
+            pass
 
-    def to_json(self) -> Dict:
-        return {
-            "name": self.name,
-            "outfitId": self.outfit_id,
-            "speed": self.speed,
-            "stamina": self.stamina,
-            "power": self.power,
-            "guts": self.guts,
-            "wisdom": self.wisdom,
-            "strategy": self.strategy,
-            "distanceAptitude": self.distance_aptitudes,
-            "surfaceAptitude": self.surface_aptitudes,
-            "strategyAptitude": self.strategy_aptitudes,
-            "skills": self.skills,
-        }
+    # Aptitudes -> Requires full double stacked Dictionary. (Maybe work better with a class?)
+    def set_aptitudes(self, aptitudes_dict: Dict = {}, **aptitude):
+        pass  # Set same as above
+
+    # Skills -> Needs somewhat advanced array handling. Somehow want to keep Inherited seperate?
+    def add_skills(self, skills: List[str]):  # Add skills to list
+        pass
+
+    def rem_skills(self, skills: List[str]):  # Remove specific skills
+        pass
+
+    def set_skills(self, skills: List[str]):  # Reset Skills to defined list
+        pass
+
+    # Getters for each parameter
+
+    # toJson(), which takes in a Racecourse class
+    # and outputs the aptitudes relating to it.
