@@ -3,6 +3,7 @@ Uma Class file
 """
 
 from enum import Enum
+from subprocess import run
 from typing import Dict, List, Self
 
 from aptitudes import Aptitudes
@@ -14,18 +15,10 @@ class LetterGrade(Enum):
 
     Attributes
     ----------
-    S :
-    A :
-    B :
-    C :
-    D :
-    E :
-    F :
-    G :
-
+    A, B, C, D, E, F, G
     """
 
-    S = "s"
+    S = "S"
     A = "A"
     B = "B"
     C = "C"
@@ -33,6 +26,51 @@ class LetterGrade(Enum):
     E = "E"
     F = "F"
     G = "G"
+
+
+class UmaStyle(Enum):
+    """
+
+    Attributes
+    ----------
+    FRONT, NIGE : 0
+    PACE, SENJOUR : 1
+    LATE, SASI : 2
+    END, OIKOMI : 3
+    """
+
+    # Front
+    FRONT = 0
+    NIGE = 0
+    # Pace
+    PACE = 1
+    SENJOUR = 1
+    # Late
+    LATE = 2
+    SASI = 2
+    # End
+    END = 3
+    OIKOMI = 3
+
+
+class UmaTrack(Enum):
+    TURF = 0
+    DIRT = 1
+
+
+class UmaDistance(Enum):
+    SPRINT = 0
+    MILE = 1
+    MEDIUM = 2
+    LONG = 3
+
+
+class UmaStats(Enum):
+    SPEED = 0
+    STAMINA = 1
+    POWER = 2
+    GUTS = 3
+    WIT = 4
 
 
 class Uma:
@@ -65,12 +103,12 @@ class Uma:
     score: int  # Score number
 
     # Stats
-    stats: Dict[str, int] = {
-        "speed": 1,
-        "stamina": 1,
-        "power": 1,
-        "guts": 1,
-        "wisdom": 1,
+    stats: Dict[Enum, int] = {
+        UmaStats.SPEED: 1,
+        UmaStats.STAMINA: 1,
+        UmaStats.POWER: 1,
+        UmaStats.GUTS: 1,
+        UmaStats.WIT: 1,
     }
 
     # Aptitudes
@@ -106,11 +144,10 @@ class Uma:
         self.outfit_id = outfit
 
         # TODO: Find Unique skill from uma-skill-tools
-
+        run()
         return self
 
     # Score -> Could be Automatically set with calculation?
-
     def set_score(self, score: int) -> Self:
         self.score = score
 
