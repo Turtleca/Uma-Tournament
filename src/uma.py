@@ -91,7 +91,7 @@ class Uma:
         else:
             self.strategy = UmaStyle.from_name(strategy)
 
-        print(f"Created Uma {self.name}")
+        print(f'Created Uma:"{self.name}"')
         print(self)
 
     # ---------------------
@@ -346,13 +346,15 @@ class Uma:
         calling get_skill_id() when needed.
         """
         resolved = []
-        for s in skills:
-            if isinstance(s, int):
-                resolved.append(s)
-            else:
-                skill_id = Uma.get_skill_id(str(s))
-                if skill_id is not None:
-                    resolved.append(skill_id)
+        if skills:
+
+            for s in skills:
+                if isinstance(s, int):
+                    resolved.append(s)
+                else:
+                    skill_id = Uma.get_skill_id(str(s))
+                    if skill_id is not None:
+                        resolved.append(skill_id)
         return resolved
 
     @classmethod

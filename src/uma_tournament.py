@@ -50,12 +50,7 @@ def main(**args):
         "Mejiro Mqueen",
         "[idk]",
         200,
-        [100, 100, 100, 100, 100],
-        "Nige",
-        [],
-        ["A", "A", "A"],
     )
-    print(mqueen)
 
 
 if __name__ == "__main__":
