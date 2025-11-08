@@ -346,15 +346,14 @@ class Uma:
         calling get_skill_id() when needed.
         """
         resolved = []
-        if skills:
-
-            for s in skills:
-                if isinstance(s, int):
-                    resolved.append(s)
-                else:
-                    skill_id = Uma.get_skill_id(str(s))
-                    if skill_id is not None:
-                        resolved.append(skill_id)
+        skills = list(skills)
+        for s in skills:
+            if isinstance(s, int):
+                resolved.append(s)
+            else:
+                skill_id = Uma.get_skill_id(str(s))
+                if skill_id is not None:
+                    resolved.append(skill_id)
         return resolved
 
     @classmethod
@@ -364,11 +363,12 @@ class Uma:
         Returns an integer skill ID, or None if the lookup fails.
         """
         try:
+            print("Calling subprocess")
             result = subprocess.run(
                 [
                     "npx",
                     "ts-node",
-                    "tools/skillgrep.ts",
+                    "../uma-skill-tools/tools/skillgrep.ts",
                     "-N",
                     name,
                     "--lang",
@@ -377,11 +377,16 @@ class Uma:
                     "-d",
                 ],
                 capture_output=True,
+                # shell=True,
                 text=True,
                 check=True,  # Raises CalledProcessError if exit code != 0
+                timeout=5,
+                cwd="uma-skill-tools",
             )
-            output = result.stdout.strip()
-            return int(output)
+            print("subprocess done")
+            # print(result.stdout)
+            output = result.stdout.strip().splitlines()
+            return int(output[0])  # Always take first option
         except subprocess.CalledProcessError as e:
             print(
                 f"Error running skillgrep for '{name}': {e.stderr.strip() or e.stdout.strip()}"
@@ -413,7 +418,7 @@ def main():
         {"speed": 1200, "stamina": 800, "power": 800, "guts": 400, "wisdom": 2}
     )
 
-    Test.rem_skills([900271])
+    Test.add_skills(["Corner"])
 
 
 if __name__ == "__main__":
