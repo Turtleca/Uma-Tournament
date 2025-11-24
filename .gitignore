@@ -5,3 +5,4 @@
 umas/*
 !umas/README.md
 !umas/template.json
+**/__pycache__
