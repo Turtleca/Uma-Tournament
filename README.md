@@ -23,13 +23,12 @@ This project aims to create a centralized database of trained Umas (Umamusume ch
 The repository is organized as follows:
 
 - `uma-skill-tools`  
-  *This is a submodule.* It contains tools and utilities related to Umamusume skills, including programs to compare different Umas on specific tracks. For details, see the submodule’s own README or documentation.
+  _This is a submodule._ It contains tools and utilities related to Umamusume skills, including programs to compare different Umas on specific tracks. For details, see the submodule’s own README or documentation.
+- `src/`
+  Source file for the code
 
-- `umamusume-ocr`  
-  *This is a submodule.* It provides OCR (Optical Character Recognition) functionality for importing Umamusume trainee-images into a csv.
-  
 - `umas/`  
-  Stores `uma.json` files for use in the tournament.  
+  Stores `uma.json` files for use in the tournament.
   - [`README.md`](https://github.com/Turtleca/Uma-Tournament/blob/main/umas/README.md): Details about the contents and usage of this directory.
   - [`template.json`](https://github.com/Turtleca/Uma-Tournament/blob/main/umas/template.json): A template JSON file for character data.
 
@@ -48,6 +47,7 @@ See the [LICENSE](./LICENSE) file for details.
 ## How to Use
 
 1. **Clone the Repository**
+
    ```bash
    git clone --recurse-submodules https://github.com/Turtleca/Uma-Tournament.git
    ```
@@ -81,7 +81,8 @@ Please ensure your code is well-documented and tested.
 ## Credits
 
 - [uma-skill-tools](https://github.com/Turtleca/Uma-Tournament/tree/main/uma-skill-tools) and [umamusume-ocr](https://github.com/Turtleca/Uma-Tournament/tree/main/umamusume-ocr) are integrated as submodules—refer to their respective repositories for more information.
+- ChatGPT for assisting in coding of many functions
 
 ---
 
-*For more details, see individual README files within subdirectories and submodules.*
+_For more details, see individual README files within subdirectories and submodules._

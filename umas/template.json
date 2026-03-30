@@ -1,22 +1,15 @@
 {
-  "_Desc": "Template file for Designing Uma jsons",
-
-  "_comment": "These range from 0-1200 in the current scenarios of Umamusume",
   "speed": 1200,
   "stamina": 1200,
   "power": 800,
   "guts": 700,
   "wisdom": 700,
 
-  "_comment": "Available strategies are: Nige (front), Senkou (pace), Sasi (late), Oikomi (end)",
   "strategy": "Sasi",
 
-  "_comment": "Aptitudes must be for current track! Make a seperate json & convert for auto",
   "distanceAptitude": "S",
   "surfaceAptitude": "A",
   "strategyAptitude": "A",
 
-  "_comment": "List of Skill ids for the specified Uma. Use skillgrep.ts to find by english name.",
   "skills": [900271, 900201]
 }
-
