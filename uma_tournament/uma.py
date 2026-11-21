@@ -11,38 +11,45 @@ from .support_card import SupportCard
 class Uma:
     """An individual trained Uma."""
 
-    trained_chara_id: int
-    owner_trained_chara_id: int
-    single_mode_chara_id: int
-    chara_seed: int
-    card_id: int
-    speed: int
-    stamina: int
-    power: int
-    wiz: int
-    guts: int
-    fans: int
-    rank_score: int
-    rank: int
-    wins: int
-    scenario_id: int
-    route_id: int
-    arrive_route_race_id: int
-    running_style: int
-    talent_level: int
-    proper_ground_turf: int
-    proper_ground_dirt: int
-    proper_running_style_nige: int
-    proper_running_style_senko: int
-    proper_running_style_sashi: int
-    proper_running_style_oikomi: int
-    proper_distance_short: int
-    proper_distance_mile: int
-    proper_distance_middle: int
-    proper_distance_long: int
-    chara_grade: int
-    rarity: int
-    nickname_id: int
+    trained_chara_id: int = 0
+    owner_trained_chara_id: int = 0
+    single_mode_chara_id: int = 0
+    chara_seed: int = 0
+    card_id: int = 0
+    speed: int = 0
+    stamina: int = 0
+    power: int = 0
+    wiz: int = 0
+    guts: int = 0
+    fans: int = 0
+    rank_score: int = 0
+    rank: int = 0
+    wins: int = 0
+    motivation: int = 0
+    talent_level: int = 0
+    running_style: int = 0
+    scenario_id: int = 0
+    route_id: int = 0
+    arrive_route_race_id: int = 0
+    chara_grade: int = 0
+    rarity: int = 0
+    nickname_id: int = 0
+    race_cloth_id: int = 0
+    max_speed: int = 0
+    max_stamina: int = 0
+    max_power: int = 0
+    max_wiz: int = 0
+    max_guts: int = 0
+    proper_ground_turf: int = 0
+    proper_ground_dirt: int = 0
+    proper_running_style_nige: int = 0
+    proper_running_style_senko: int = 0
+    proper_running_style_sashi: int = 0
+    proper_running_style_oikomi: int = 0
+    proper_distance_short: int = 0
+    proper_distance_mile: int = 0
+    proper_distance_middle: int = 0
+    proper_distance_long: int = 0
     skills: List[Skill] = field(default_factory=list)
     support_card_list: List[SupportCard] = field(default_factory=list)
     race_result_list: List[RaceResult] = field(default_factory=list)
@@ -58,7 +65,6 @@ class Uma:
     use_type: int = 0
     is_saved: int = 1
     is_locked: int = 1
-    race_cloth_id: int = 101
     register_time: str = ""
     create_time: str = ""
 

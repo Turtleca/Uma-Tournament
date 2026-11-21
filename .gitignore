@@ -4,7 +4,6 @@
 # Personal Umas
 umas/*
 !umas/README.md
-!umas/template.json
 
 # Python
 __pycache__/
