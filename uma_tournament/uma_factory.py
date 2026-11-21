@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, Iterable, List, Optional
 
 from .race_result import RaceResult
 from .skill import Skill
@@ -7,159 +7,341 @@ from .support_card import SupportCard
 from .uma import Uma
 
 
+def normalized_key(key: str) -> str:
+    return "".join(character.lower() for character in key if character.isalnum())
+
+
+def get_value(data: Dict[str, Any], *names: str, default: Any = 0) -> Any:
+    normalized_names = {normalized_key(name) for name in names}
+    for key, value in data.items():
+        if normalized_key(key) in normalized_names:
+            return value
+    return default
+
+
 class UmaFactory:
-    """Converts normalized JSON dictionaries into Uma domain objects."""
+    """Converts one horseACT veterans.json entry into an Uma."""
 
-    REQUIRED_FIELDS = (
-        "trained_chara_id",
-        "speed",
-        "stamina",
-        "power",
-        "wiz",
-        "guts",
-        "rank",
-        "rank_score",
-        "running_style",
-        "card_id",
-    )
-
-    def create(self, uma_data: Dict[str, Any]) -> Uma:
-        normalized = dict(uma_data)
-        normalized.setdefault(
-            "trained_chara_id",
-            normalized.get("single_mode_chara_id", 0),
-        )
-        normalized.setdefault(
-            "running_style",
-            normalized.get("race_running_style"),
-        )
-        normalized.setdefault("rank", normalized.get("chara_grade", 0))
-        normalized.setdefault("rank_score", 0)
-
-        missing = [field for field in self.REQUIRED_FIELDS if field not in normalized]
-        if missing:
-            raise ValueError(f"Missing required fields in Uma data: {missing}")
-
+    def create(self, data: Dict[str, Any]) -> Uma:
         return Uma(
-            trained_chara_id=normalized["trained_chara_id"],
-            owner_trained_chara_id=normalized.get("owner_trained_chara_id", 0),
-            single_mode_chara_id=normalized.get("single_mode_chara_id", 0),
-            chara_seed=normalized.get("chara_seed", 0),
-            card_id=normalized["card_id"],
-            speed=normalized["speed"],
-            stamina=normalized["stamina"],
-            power=normalized["power"],
-            wiz=normalized["wiz"],
-            guts=normalized["guts"],
-            fans=normalized.get("fans", 0),
-            rank_score=normalized["rank_score"],
-            rank=normalized["rank"],
-            wins=normalized.get("wins", 0),
-            scenario_id=normalized.get("scenario_id", 1),
-            route_id=normalized.get("route_id", 0),
-            arrive_route_race_id=normalized.get("arrive_route_race_id", 0),
-            running_style=normalized["running_style"],
-            talent_level=normalized.get("talent_level", 0),
-            proper_ground_turf=normalized.get("proper_ground_turf", 0),
-            proper_ground_dirt=normalized.get("proper_ground_dirt", 0),
-            proper_running_style_nige=normalized.get("proper_running_style_nige", 0),
-            proper_running_style_senko=normalized.get("proper_running_style_senko", 0),
-            proper_running_style_sashi=normalized.get("proper_running_style_sashi", 0),
-            proper_running_style_oikomi=normalized.get("proper_running_style_oikomi", 0),
-            proper_distance_short=normalized.get("proper_distance_short", 0),
-            proper_distance_mile=normalized.get("proper_distance_mile", 0),
-            proper_distance_middle=normalized.get("proper_distance_middle", 0),
-            proper_distance_long=normalized.get("proper_distance_long", 0),
-            chara_grade=normalized.get("chara_grade", 0),
-            rarity=normalized.get("rarity", 0),
-            nickname_id=normalized.get("nickname_id", 0),
-            skills=self._create_skills(normalized),
-            support_card_list=self._create_support_cards(normalized),
-            race_result_list=self._create_race_results(normalized),
-            win_saddle_id_array=normalized.get("win_saddle_id_array", []),
-            nickname_id_array=normalized.get("nickname_id_array", []),
-            factor_id_array=normalized.get("factor_id_array", []),
-            factor_info_array=normalized.get("factor_info_array", []),
-            succession_chara_array=self._create_succession_charas(normalized),
-            succession_history_array=normalized.get("succession_history_array", []),
-            succession_trained_chara_id_1=normalized.get(
-                "succession_trained_chara_id_1"
+            trained_chara_id=get_value(
+                data,
+                "trained_chara_id",
+                "trainedCharaId",
+                "id",
             ),
-            succession_trained_chara_id_2=normalized.get(
-                "succession_trained_chara_id_2"
+            owner_trained_chara_id=get_value(
+                data,
+                "owner_trained_chara_id",
+                "ownerTrainedCharaId",
             ),
-            succession_num=normalized.get("succession_num", 0),
-            use_type=normalized.get("use_type", 0),
-            is_saved=normalized.get("is_saved", 1),
-            is_locked=normalized.get("is_locked", 1),
-            race_cloth_id=normalized.get("race_cloth_id", 101),
-            register_time=normalized.get("register_time", ""),
-            create_time=normalized.get("create_time", ""),
+            single_mode_chara_id=get_value(
+                data,
+                "single_mode_chara_id",
+                "singleModeCharaId",
+            ),
+            chara_seed=get_value(data, "chara_seed", "charaSeed"),
+            card_id=get_value(data, "card_id", "cardId"),
+            speed=get_value(data, "speed"),
+            stamina=get_value(data, "stamina"),
+            power=get_value(data, "power"),
+            wiz=get_value(data, "wiz", "wisdom"),
+            guts=get_value(data, "guts"),
+            fans=get_value(data, "fans", "fanCount"),
+            rank_score=get_value(data, "rank_score", "rankScore"),
+            rank=get_value(data, "rank"),
+            wins=get_value(
+                data,
+                "wins",
+                "single_win_num",
+                "singleWinNum",
+            ),
+            motivation=get_value(data, "motivation"),
+            talent_level=get_value(data, "talent_level", "talentLevel"),
+            running_style=get_value(
+                data,
+                "running_style",
+                "race_running_style",
+                "raceRunningStyle",
+            ),
+            scenario_id=get_value(data, "scenario_id", "scenarioId"),
+            route_id=get_value(data, "route_id", "routeId"),
+            arrive_route_race_id=get_value(
+                data,
+                "arrive_route_race_id",
+                "arriveRouteRaceId",
+            ),
+            chara_grade=get_value(data, "chara_grade", "charaGrade"),
+            rarity=get_value(data, "rarity"),
+            nickname_id=get_value(data, "nickname_id", "nick_name_id", "nickNameId"),
+            race_cloth_id=get_value(data, "race_cloth_id", "raceClothId"),
+            max_speed=get_value(data, "max_speed", "maxSpeed"),
+            max_stamina=get_value(data, "max_stamina", "maxStamina"),
+            max_power=get_value(data, "max_power", "maxPower"),
+            max_wiz=get_value(data, "max_wiz", "maxWiz"),
+            max_guts=get_value(data, "max_guts", "maxGuts"),
+            proper_ground_turf=get_value(
+                data,
+                "proper_ground_turf",
+                "properGroundTurf",
+            ),
+            proper_ground_dirt=get_value(
+                data,
+                "proper_ground_dirt",
+                "properGroundDirt",
+            ),
+            proper_running_style_nige=get_value(
+                data,
+                "proper_running_style_nige",
+                "properRunningStyleNige",
+            ),
+            proper_running_style_senko=get_value(
+                data,
+                "proper_running_style_senko",
+                "properRunningStyleSenko",
+            ),
+            proper_running_style_sashi=get_value(
+                data,
+                "proper_running_style_sashi",
+                "properRunningStyleSashi",
+            ),
+            proper_running_style_oikomi=get_value(
+                data,
+                "proper_running_style_oikomi",
+                "properRunningStyleOikomi",
+            ),
+            proper_distance_short=get_value(
+                data,
+                "proper_distance_short",
+                "properDistanceShort",
+            ),
+            proper_distance_mile=get_value(
+                data,
+                "proper_distance_mile",
+                "properDistanceMile",
+            ),
+            proper_distance_middle=get_value(
+                data,
+                "proper_distance_middle",
+                "properDistanceMiddle",
+            ),
+            proper_distance_long=get_value(
+                data,
+                "proper_distance_long",
+                "properDistanceLong",
+            ),
+            skills=self._create_skills(data),
+            support_card_list=self._create_support_cards(data),
+            race_result_list=self._create_race_results(data),
+            win_saddle_id_array=self._get_int_list(
+                data,
+                "win_saddle_id_array",
+                "winSaddleIdArray",
+            ),
+            nickname_id_array=self._get_int_list(
+                data,
+                "nickname_id_array",
+                "nick_name_id_array",
+                "nickNameIdArray",
+            ),
+            factor_id_array=self._get_int_list(
+                data,
+                "factor_id_array",
+                "factorIdArray",
+                "factorDataArray",
+            ),
+            factor_info_array=get_value(
+                data,
+                "factor_info_array",
+                "factorInfoArray",
+                "factorDataArray",
+                default=[],
+            ),
+            succession_chara_array=self._create_succession_charas(data),
+            succession_history_array=get_value(
+                data,
+                "succession_history_array",
+                "successionHistoryArray",
+                default=[],
+            ),
+            succession_trained_chara_id_1=get_value(
+                data,
+                "succession_trained_chara_id_1",
+                "successionTrainedCharaId1",
+            ),
+            succession_trained_chara_id_2=get_value(
+                data,
+                "succession_trained_chara_id_2",
+                "successionTrainedCharaId2",
+            ),
+            succession_num=get_value(
+                data,
+                "succession_num",
+                "successionCount",
+                "successionNum",
+            ),
+            use_type=get_value(data, "use_type", "useType"),
+            is_saved=get_value(data, "is_saved", "isSaved"),
+            is_locked=get_value(data, "is_locked", "isLock", "isLocked"),
+            register_time=get_value(
+                data,
+                "register_time",
+                "registerTime",
+                default="",
+            ),
+            create_time=get_value(data, "create_time", "createTime", default=""),
         )
 
     @staticmethod
-    def _create_skills(data: Dict[str, Any]) -> List[Skill]:
+    def _get_int_list(
+        data: Dict[str, Any],
+        *names: str,
+    ) -> List[int]:
+        value = get_value(data, *names, default=[])
+        if not isinstance(value, list):
+            return []
+        return [item for item in value if isinstance(item, int)]
+
+    @staticmethod
+    def _get_array(
+        data: Dict[str, Any],
+        *names: str,
+    ) -> List[Dict[str, Any]]:
+        value = get_value(data, *names, default=[])
+        if not isinstance(value, list):
+            return []
+        return [item for item in value if isinstance(item, dict)]
+
+    def _create_skills(self, data: Dict[str, Any]) -> List[Skill]:
         return [
-            Skill(skill_id=skill["skill_id"], level=skill["level"])
-            for skill in data.get("skill_array", [])
+            Skill(
+                skill_id=get_value(skill, "skill_id", "skillId"),
+                level=get_value(skill, "level"),
+            )
+            for skill in self._get_array(
+                data,
+                "skill_array",
+                "acquired_skill_array",
+                "acquiredSkillArray",
+            )
         ]
 
-    @staticmethod
-    def _create_support_cards(data: Dict[str, Any]) -> List[SupportCard]:
-        cards = data.get("support_card_list")
-        if cards is None:
-            cards = data.get("support_card_array", [])
+    def _create_support_cards(
+        self,
+        data: Dict[str, Any],
+    ) -> List[SupportCard]:
         return [
             SupportCard(
-                position=card["position"],
-                support_card_id=card["support_card_id"],
-                exp=card["exp"],
-                limit_break_count=card["limit_break_count"],
+                position=get_value(card, "position"),
+                support_card_id=get_value(
+                    card,
+                    "support_card_id",
+                    "supportCardId",
+                ),
+                exp=get_value(card, "exp"),
+                limit_break_count=get_value(
+                    card,
+                    "limit_break_count",
+                    "limitBreakCount",
+                ),
             )
-            for card in cards
+            for card in self._get_array(
+                data,
+                "support_card_list",
+                "supportCardArray",
+                "support_card_array",
+            )
         ]
 
-    @staticmethod
-    def _create_race_results(data: Dict[str, Any]) -> List[RaceResult]:
-        results = data.get("race_result_list")
-        if results is None:
-            results = data.get("race_history", [])
+    def _create_race_results(
+        self,
+        data: Dict[str, Any],
+    ) -> List[RaceResult]:
         return [
             RaceResult(
-                turn=result["turn"],
-                program_id=result["program_id"],
-                weather=result["weather"],
-                ground_condition=result["ground_condition"],
-                running_style=result.get(
-                    "running_style",
-                    data.get("running_style", data.get("race_running_style", 0)),
+                turn=get_value(result, "turn"),
+                program_id=get_value(result, "program_id", "programId"),
+                weather=get_value(result, "weather"),
+                ground_condition=get_value(
+                    result,
+                    "ground_condition",
+                    "groundCondition",
                 ),
-                popularity=result.get("popularity", 0),
-                result_rank=result.get(
+                running_style=get_value(result, "running_style", "runningStyle"),
+                popularity=get_value(result, "popularity"),
+                result_rank=get_value(
+                    result,
                     "result_rank",
-                    result.get("frame_order", 0),
+                    "resultRank",
+                    "frame_order",
+                    "frameOrder",
                 ),
-                result_time=result.get("result_time", 0),
-                prize_money=result.get("prize_money", 0),
+                result_time=get_value(
+                    result,
+                    "result_time",
+                    "resultTime",
+                ),
+                prize_money=get_value(
+                    result,
+                    "prize_money",
+                    "prizeMoney",
+                ),
             )
-            for result in results
+            for result in self._get_array(
+                data,
+                "race_result_list",
+                "singleModeRaceResultArray",
+                "raceHistory",
+            )
         ]
 
-    @staticmethod
     def _create_succession_charas(
+        self,
         data: Dict[str, Any],
     ) -> List[SuccessionCharaInfo]:
         return [
             SuccessionCharaInfo(
-                position_id=char.get("position_id", 0),
-                card_id=char["card_id"],
-                rank=char["rank"],
-                rarity=char["rarity"],
-                talent_level=char["talent_level"],
-                factor_id_array=char.get("factor_id_array", []),
-                factor_info_array=char.get("factor_info_array", []),
-                win_saddle_id_array=char.get("win_saddle_id_array", []),
-                owner_viewer_id=char.get("owner_viewer_id", 0),
+                position_id=get_value(
+                    char,
+                    "position_id",
+                    "positionId",
+                ),
+                card_id=get_value(char, "card_id", "cardId"),
+                rank=get_value(char, "rank"),
+                rarity=get_value(char, "rarity"),
+                talent_level=get_value(
+                    char,
+                    "talent_level",
+                    "talentLevel",
+                ),
+                factor_id_array=self._get_int_list(
+                    char,
+                    "factor_id_array",
+                    "factorIdArray",
+                    "factorDataArray",
+                ),
+                factor_info_array=get_value(
+                    char,
+                    "factor_info_array",
+                    "factorInfoArray",
+                    "factorDataArray",
+                    default=[],
+                ),
+                win_saddle_id_array=self._get_int_list(
+                    char,
+                    "win_saddle_id_array",
+                    "winSaddleIdArray",
+                ),
+                owner_viewer_id=get_value(
+                    char,
+                    "owner_viewer_id",
+                    "ownerViewerId",
+                ),
             )
-            for char in data.get("succession_chara_array", [])
+            for char in self._get_array(
+                data,
+                "succession_chara_array",
+                "successionCharaList",
+                "succession_chara_list",
+            )
         ]
