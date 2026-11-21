@@ -5,3 +5,7 @@
 umas/*
 !umas/README.md
 !umas/template.json
+
+# Python
+__pycache__/
+*.py[cod]
