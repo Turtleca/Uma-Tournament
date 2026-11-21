@@ -182,8 +182,21 @@ class UmaCollection:
         with open(filepath, 'r', encoding='utf-8') as file:
             data = json.load(file)
         
+        if isinstance(data, dict):
+            try:
+                data = data['single_mode_load_common']['chara_info']
+            except (KeyError, TypeError):
+                raise ValueError(
+                    "Uma JSON must contain a list or a "
+                    "single_mode_load_common.chara_info object"
+                ) from None
+            data = [data]
+
         if not isinstance(data, list):
-            raise ValueError("data.json must contain a JSON array of Uma objects")
+            raise ValueError(
+                "Uma JSON must contain a JSON array or a "
+                "single_mode_load_common.chara_info object"
+            )
         
         self.umas = [self._create_uma_from_dict(uma_data) for uma_data in data]
     
@@ -201,11 +214,18 @@ class UmaCollection:
             ValueError: If required fields are missing
         """
         # Required fields validation
+        # career-export files identify a veteran by single_mode_chara_id and
+        # call the running style race_running_style.
+        uma_data = dict(uma_data)
+        uma_data.setdefault('trained_chara_id', uma_data.get('single_mode_chara_id', 0))
+        uma_data.setdefault('running_style', uma_data.get('race_running_style'))
+        uma_data.setdefault('rank', uma_data.get('chara_grade', 0))
+        uma_data.setdefault('rank_score', 0)
+
         required_fields = [
             'trained_chara_id', 'speed', 'stamina', 'power', 'wiz', 'guts',
             'rank', 'rank_score', 'running_style', 'card_id'
         ]
-        
         missing_fields = [f for f in required_fields if f not in uma_data]
         if missing_fields:
             raise ValueError(f"Missing required fields in Uma data: {missing_fields}")
@@ -224,7 +244,10 @@ class UmaCollection:
                 exp=sc['exp'],
                 limit_break_count=sc['limit_break_count']
             )
-            for sc in uma_data.get('support_card_list', [])
+            for sc in uma_data.get(
+                'support_card_list',
+                uma_data.get('support_card_array', [])
+            )
         ]
         
         # Parse race results
@@ -235,12 +258,15 @@ class UmaCollection:
                 weather=rr['weather'],
                 ground_condition=rr['ground_condition'],
                 running_style=rr['running_style'],
-                popularity=rr['popularity'],
-                result_rank=rr['result_rank'],
-                result_time=rr['result_time'],
-                prize_money=rr['prize_money']
+                popularity=rr.get('popularity', 0),
+                result_rank=rr.get('result_rank', 0),
+                result_time=rr.get('result_time', 0),
+                prize_money=rr.get('prize_money', 0)
             )
-            for rr in uma_data.get('race_result_list', [])
+            for rr in uma_data.get(
+                'race_result_list',
+                uma_data.get('race_history', [])
+            )
         ]
         
         # Parse succession characters

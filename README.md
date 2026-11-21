@@ -22,11 +22,9 @@ This project aims to create a centralized database of trained Umas (Umamusume ch
 
 The repository is organized as follows:
 
-- `uma-skill-tools`  
-  *This is a submodule.* It contains tools and utilities related to Umamusume skills, including programs to compare different Umas on specific tracks. For details, see the submodule’s own README or documentation.
-
-- `umamusume-ocr`  
-  *This is a submodule.* It provides OCR (Optical Character Recognition) functionality for importing Umamusume trainee-images into a csv.
+- `honse-sim`
+  *This is a submodule.* It provides the Uma Musume race simulation engine and
+  the career exporter used to capture veteran Umas as JSON.
   
 - `umas/`  
   Stores `uma.json` files for use in the tournament.  
@@ -53,7 +51,7 @@ See the [LICENSE](./LICENSE) file for details.
    ```
 
 2. **Set Up Submodules**
-   - The repository uses submodules (`uma-skill-tools`, `umamusume-ocr`).  
+   - The repository uses the `honse-sim` submodule.
      Make sure to initialize and update them:
      ```bash
      git submodule update --init --recursive
@@ -80,7 +78,9 @@ Please ensure your code is well-documented and tested.
 
 ## Credits
 
-- [uma-skill-tools](https://github.com/Turtleca/Uma-Tournament/tree/main/uma-skill-tools) and [umamusume-ocr](https://github.com/Turtleca/Uma-Tournament/tree/main/umamusume-ocr) are integrated as submodules—refer to their respective repositories for more information.
+- [honse-sim](https://github.com/jalbarrang/honse-sim) is integrated as a
+  submodule. Its `tools/career-export` tool produces the veteran-Uma JSON
+  accepted by `UmaCollection`.
 
 ---
 
