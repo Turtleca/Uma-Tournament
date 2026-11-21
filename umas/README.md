@@ -8,7 +8,7 @@ It writes an API-shaped JSON document with the character data at
 `single_mode_load_common.chara_info`. Load that file directly with:
 
 ```python
-from uma_collection import UmaCollection
+from uma_tournament import UmaCollection
 
 collection = UmaCollection("career-export.json")
 ```
