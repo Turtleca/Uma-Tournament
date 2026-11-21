@@ -1,5 +1,21 @@
 # Designing an Uma Json.
 
+## Importing a veteran Uma
+
+The recommended source for trained Umas is the
+[`honse-sim` career exporter](https://github.com/jalbarrang/honse-sim/tree/main/tools/career-export).
+It writes an API-shaped JSON document with the character data at
+`single_mode_load_common.chara_info`. Load that file directly with:
+
+```python
+from uma_collection import UmaCollection
+
+collection = UmaCollection("career-export.json")
+```
+
+`UmaCollection` also continues to accept the legacy array format used by
+`umas/data.json`. The OCR import workflow is no longer required.
+
 ## Basics
 
 Umas are formatted in Pure json. They take very specific arguments that are **course dependent**.
